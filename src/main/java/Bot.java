@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Bot extends TelegramLongPollingBot {
-     static long chat_id;
+     static final String TOKEN = System.getenv("TOKEN");
     public static void main(String[] args) {
         try {
             TelegramBotsApi botsApi = new TelegramBotsApi(DefaultBotSession.class);
@@ -32,7 +32,7 @@ public class Bot extends TelegramLongPollingBot {
 
     @Override
     public String getBotToken() {
-        return "5074183347:AAFFRFQhOP4rP3Kw7J03pIpe-bb0eoqjg6A";
+        return TOKEN;
     }
 
     public void sendMsg(Message message, String text) {
@@ -41,6 +41,7 @@ public class Bot extends TelegramLongPollingBot {
         sendMessage.setChatId(message.getChatId().toString());
         sendMessage.setReplyToMessageId(message.getMessageId());
         sendMessage.setText(text);
+
         try {
             getButtons(sendMessage);
             execute(sendMessage);
@@ -62,9 +63,7 @@ public class Bot extends TelegramLongPollingBot {
         List<KeyboardRow> keyboardRowList = new ArrayList<>();
         KeyboardRow keyboarFirstdRow = new KeyboardRow();
 
-        keyboarFirstdRow.add(new KeyboardButton("/help"));
-        keyboarFirstdRow.add(new KeyboardButton("/settings"));
-
+        keyboarFirstdRow.add(new KeyboardButton("Help"));
 
         keyboardRowList.add(keyboarFirstdRow);
         replyKeyboardMarkup.setKeyboard(keyboardRowList);
@@ -79,49 +78,37 @@ public class Bot extends TelegramLongPollingBot {
         Message message = update.getMessage();
         if (message != null && message.hasText()) {
             switch (message.getText()) {
-                case "/start" -> sendMsg(message, "Добро пожаловать мешки с костями!");
-                case "/settings" -> sendMsg(message, "Что будем настраивать?");
-                case "/help" -> sendMsg(message, "Чем могу помочь?");
-                default -> {
-                }
+                case "/start" -> sendMsg(message, "Добро пожаловать мешок с костями!");
+                case "Help" -> sendMsg(message, "Напиши количество рядов");
+                default -> sendMsg(message, salary(message) );
+            }
             }
         }
-    }
 
 
 
 
 
 
-    /*@Override
-    public void onUpdateReceived(Update update) {
-        chat_id = update.getMessage().getChatId();
 
-        SendMessage sendMessage = new SendMessage();
-        sendMessage.setChatId(String.valueOf(chat_id));
-        String text = update.getMessage().getText();
 
-        try{
-            sendMessage.setText("Вы ввели: "+ text);
-            execute(sendMessage);
 
-            sendMessage.setText("Результат: "+ (getMsg(text)));
-            execute(sendMessage);
-        }catch (TelegramApiException e){
+
+    public String salary(Message message) {
+        try {
+            double x = (Double.parseDouble(message.getText()) * 0.08+580.00)-(Double.parseDouble(message.getText()) * 0.08)/5 ;
+            return x +" eur";
+        } catch (NumberFormatException e) {
             e.printStackTrace();
         }
+        return "0";
     }
-    private int getMsg(String msg){
-    try{
-        return Integer.parseInt(msg)*5;
-    }catch (NumberFormatException e){
-        e.printStackTrace();
-    } return 0;
-
     }
 
-     */
 
 
-}
+
+
+
+
 
