@@ -1,1 +1,1 @@
-web: java -jar target/TelegramBot-1.1-SNAPSHOT.jar
+web: java -jar -Xmx300m -Xss512k -XX:CICompilerCount=2 -Dfile.encoding=UTF-8 target/TelegramBot-1.1-SNAPSHOT.jar
