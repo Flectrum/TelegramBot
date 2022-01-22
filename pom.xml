@@ -48,7 +48,7 @@
                         <manifest>
                             <addClasspath>true</addClasspath>
                             <classpathPrefix>lib/</classpathPrefix>
-                            <mainClass>src/main/java/Bot.java</mainClass>
+         //ДОПИСАТЬ МАНИФЕСТ!                   <mainClass>Bot.class</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
